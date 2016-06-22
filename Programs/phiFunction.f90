@@ -41,6 +41,7 @@ end function
 
 ! This function works only for nu+sigma=even,L=even 
 ! These functions appear to work accurately, for r<= 23.0 fm
+! The units of the Phi(q,r) functions are MeV^(nu-1)
 real(8) function phi(q,r,nu,sigma,L)
 implicit none
 integer,intent(in)::nu,sigma,L

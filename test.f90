@@ -6,7 +6,7 @@ integer,parameter::nu = 0
 integer,parameter::sigma=0
 integer,parameter::L=0
 real(8),parameter::dh =1.d0
-real(8),parameter::q=500.0d0
+real(8),parameter::q=1.0d0
 real(8)::r
 integer::i
 

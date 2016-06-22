@@ -189,7 +189,7 @@ subroutine aaaa
 !
   return
 end
-subroutine qag ( f, n1,n2,l1,l2,q,v,n,a, b, epsabs, epsrel, key, result, abserr, neval, ier )
+subroutine qag ( f,a, b, epsabs, epsrel, key, result, abserr, neval, ier )
 
 !*****************************************************************************80
 !
@@ -290,17 +290,15 @@ subroutine qag ( f, n1,n2,l1,l2,q,v,n,a, b, epsabs, epsrel, key, result, abserr,
   integer neval
   real*8:: result
   real*8:: rlist(limit)
-  integer:: n1,n2,l1,l2,n
-  real*8::q,v
   
   
 
-  call qage ( f,n1,n2,l1,l2,q,v,n, a, b, epsabs, epsrel, key, limit, result, abserr, neval, &
+  call qage ( f, a, b, epsabs, epsrel, key, limit, result, abserr, neval, &
     ier, alist, blist, rlist, elist, iord, last )
 
   return
 end
-subroutine qage ( f,n1,n2,l1,l2,q,v,n, a, b, epsabs, epsrel, key, limit, result, abserr, neval, &
+subroutine qage ( f,a, b, epsabs, epsrel, key, limit, result, abserr, neval, &
   ier, alist, blist, rlist, elist, iord, last )
 
 !*****************************************************************************80
@@ -452,8 +450,6 @@ subroutine qage ( f,n1,n2,l1,l2,q,v,n, a, b, epsabs, epsrel, key, limit, result,
   real*8:: resabs
   real*8:: result
   real*8:: rlist(limit)
-  integer:: n1,n2,l1,l2,n
-  real*8::q,v
 !
 !  Test on validity of parameters.
 !
@@ -483,17 +479,17 @@ subroutine qage ( f,n1,n2,l1,l2,q,v,n, a, b, epsabs, epsrel, key, limit, result,
   neval = 0
 
   if ( keyf == 1 ) then
-    call qk15 ( f, n1,n2,l1,l2,q,v,n,a, b, result, abserr, defabs, resabs )
+    call qk15 ( f, a, b, result, abserr, defabs, resabs )
   else if ( keyf == 2 ) then
-    call qk21 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, defabs, resabs )
+    call qk21 ( f, a, b,result, abserr, defabs, resabs )
   else if ( keyf == 3 ) then
-    call qk31 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, defabs, resabs )
+    call qk31 ( f, a, b,result, abserr, defabs, resabs )
   else if ( keyf == 4 ) then
-    call qk41 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, defabs, resabs )
+    call qk41 ( f, a, b,result, abserr, defabs, resabs )
   else if ( keyf == 5 ) then
-    call qk51 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, defabs, resabs )
+    call qk51 ( f, a, b,result, abserr, defabs, resabs )
   else if ( keyf == 6 ) then
-    call qk61 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, defabs, resabs )
+    call qk61 ( f, a, b,result, abserr, defabs, resabs )
   end if
 
   last = 1
@@ -548,31 +544,31 @@ subroutine qage ( f,n1,n2,l1,l2,q,v,n, a, b, epsabs, epsrel, key, limit, result,
     b2 = blist(maxerr)
 
     if ( keyf == 1 ) then
-      call qk15 ( f, n1,n2,l1,l2,q,v,n,a1, b1, area1, error1, resabs, defab1 )
+      call qk15 ( f, a1, b1, area1, error1, resabs, defab1 )
     else if ( keyf == 2 ) then
-      call qk21 ( f,n1,n2,l1,l2,q,v,n, a1, b1, area1, error1, resabs, defab1 )
+      call qk21 ( f, a1, b1, area1, error1, resabs, defab1 )
     else if ( keyf == 3 ) then
-      call qk31 ( f, n1,n2,l1,l2,q,v,n,a1, b1, area1, error1, resabs, defab1 )
+      call qk31 ( f, a1, b1, area1, error1, resabs, defab1 )
     else if ( keyf == 4 ) then
-      call qk41 ( f,n1,n2,l1,l2,q,v,n, a1, b1, area1, error1, resabs, defab1)
+      call qk41 ( f, a1, b1, area1, error1, resabs, defab1)
     else if ( keyf == 5 ) then
-      call qk51 ( f,n1,n2,l1,l2,q,v,n, a1, b1, area1, error1, resabs, defab1 )
+      call qk51 ( f, a1, b1, area1, error1, resabs, defab1 )
     else if ( keyf == 6 ) then
-      call qk61 ( f,n1,n2,l1,l2,q,v,n, a1, b1, area1, error1, resabs, defab1 )
+      call qk61 ( f, a1, b1, area1, error1, resabs, defab1 )
     end if
 
     if ( keyf == 1 ) then
-      call qk15 ( f,n1,n2,l1,l2,q,v,n, a2, b2, area2, error2, resabs, defab2 )
+      call qk15 ( f,a2, b2, area2, error2, resabs, defab2 )
     else if ( keyf == 2 ) then
-      call qk21 ( f, n1,n2,l1,l2,q,v,n,a2, b2, area2, error2, resabs, defab2 )
+      call qk21 ( f,a2, b2, area2, error2, resabs, defab2 )
     else if ( keyf == 3 ) then
-      call qk31 ( f,n1,n2,l1,l2,q,v,n, a2, b2, area2, error2, resabs, defab2 )
+      call qk31 ( f, a2, b2, area2, error2, resabs, defab2 )
     else if ( keyf == 4 ) then
-      call qk41 ( f,n1,n2,l1,l2,q,v,n, a2, b2, area2, error2, resabs, defab2 )
+      call qk41 ( f, a2, b2, area2, error2, resabs, defab2 )
     else if ( keyf == 5 ) then
-      call qk51 ( f,n1,n2,l1,l2,q,v,n, a2, b2, area2, error2, resabs, defab2 )
+      call qk51 ( f, a2, b2, area2, error2, resabs, defab2 )
     else if ( keyf == 6 ) then
-      call qk61 ( f,n1,n2,l1,l2,q,v,n, a2, b2, area2, error2, resabs, defab2 )
+      call qk61 ( f, a2, b2, area2, error2, resabs, defab2 )
     end if
 !
 !  Improve previous approximations to integral and error and
@@ -1225,7 +1221,7 @@ subroutine qagi ( f, bound, inf, epsabs, epsrel, result, abserr, neval, ier )
 
   return
 end
-subroutine qagp ( f, n1,n2,l1,l2,q,v,n ,a, b, npts2, points, epsabs, epsrel, result, abserr, &
+subroutine qagp ( f, a, b, npts2, points, epsabs, epsrel, result, abserr, &
   neval, ier )
 
 !*****************************************************************************80
@@ -1450,8 +1446,6 @@ subroutine qagp ( f, n1,n2,l1,l2,q,v,n ,a, b, npts2, points, epsabs, epsrel, res
   real*8:: rlist2(52)
   real*8:: sign
   real*8:: temp
-  integer::n1,n2,l1,l2,n
-  real*8::q,v
 !
 !  Test on validity of parameters.
 !
@@ -1522,7 +1516,7 @@ subroutine qagp ( f, n1,n2,l1,l2,q,v,n ,a, b, npts2, points, epsabs, epsrel, res
   do i = 1, nint
 
     b1 = pts(i+1)
-    call qk21 ( f, n1,n2,l1,l2,q,v,n ,a1, b1, area1, error1, defabs, resa )
+    call qk21 ( f, a1, b1, area1, error1, defabs, resa )
     abserr = abserr + error1
     result = result + area1
     ndin(i) = 0
@@ -1632,8 +1626,8 @@ subroutine qagp ( f, n1,n2,l1,l2,q,v,n ,a, b, npts2, points, epsabs, epsrel, res
     a2 = b1
     b2 = blist(maxerr)
     erlast = errmax
-    call qk21 ( f, n1,n2,l1,l2,q,v,n ,a1, b1, area1, error1, resa, defab1 )
-    call qk21 ( f, n1,n2,l1,l2,q,v,n ,a2, b2, area2, error2, resa, defab2 )
+    call qk21 ( f, a1, b1, area1, error1, resa, defab1 )
+    call qk21 ( f, a2, b2, area2, error2, resa, defab2 )
 !
 !  Improve previous approximations to integral and error
 !  and test for accuracy.
@@ -1896,7 +1890,7 @@ subroutine qagp ( f, n1,n2,l1,l2,q,v,n ,a, b, npts2, points, epsabs, epsrel, res
 
   return
 end
-subroutine qags ( f,n1,n2,l1,l2,n,q,v, a, b, epsabs, epsrel, result, abserr, neval, ier )
+subroutine qags ( f, a, b, epsabs, epsrel, result, abserr, neval, ier )
 
 !*****************************************************************************80
 !
@@ -2089,8 +2083,6 @@ subroutine qags ( f,n1,n2,l1,l2,n,q,v, a, b, epsabs, epsrel, result, abserr, nev
   real*8:: rlist(limit)
   real*8:: rlist2(52)
   real*8:: small
-  integer:: n1,n2,l1,l2,n
-  real*8::q,v
 !
 !  The dimension of rlist2 is determined by the value of
 !  limexp in QEXTR (rlist2 should be of dimension
@@ -2116,7 +2108,7 @@ subroutine qags ( f,n1,n2,l1,l2,n,q,v, a, b, epsabs, epsrel, result, abserr, nev
 !  First approximation to the integral.
 !
   ierro = 0
-  call qk21( f,n1,n2,l1,l2,q,v,n ,a, b, result, abserr, defabs, resabs )
+  call qk21( f,a, b, result, abserr, defabs, resabs )
 ! 
 !  Test on accuracy.
 !
@@ -2172,8 +2164,8 @@ subroutine qags ( f,n1,n2,l1,l2,n,q,v, a, b, epsabs, epsrel, result, abserr, nev
     a2 = b1
     b2 = blist(maxerr)
     erlast = errmax
-    call qk21 ( f, n1,n2,l1,l2,q,v,n,a1, b1, area1, error1, resabs, defab1 )
-    call qk21 ( f,n1,n2,l1,l2,q,v,n, a2, b2, area2, error2, resabs, defab2 )
+    call qk21 ( f, a1, b1, area1, error1, resabs, defab1 )
+    call qk21 ( f, a2, b2, area2, error2, resabs, defab2 )
 
 !
 !  Improve previous approximations to integral and error
@@ -6214,7 +6206,7 @@ subroutine qfour ( f, a, b, omega, integr, epsabs, epsrel, limit, icall, &
 
   return
 end
-subroutine qk15 ( f, n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
+subroutine qk15 ( f, a, b, result, abserr, resabs, resasc )
 
 !*****************************************************************************80
 !
@@ -6315,8 +6307,6 @@ subroutine qk15 ( f, n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
   real*8:: wg(4)
   real*8:: wgk(8)
   real*8:: xgk(8)
-  integer:: n1,n2,l1,l2,n
-  real*8::q,v
 
   data xgk(1),xgk(2),xgk(3),xgk(4),xgk(5),xgk(6),xgk(7),xgk(8)/ &
        9.914553711208126d-01,   9.491079123427585d-01, &
@@ -6339,7 +6329,7 @@ subroutine qk15 ( f, n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
 !  Compute the 15-point Kronrod approximation to the integral,
 !  and estimate the absolute error.
 !
-  fc = f(centr,n1,n2,l1,l2,n,q,v)
+  fc = f(centr)
   resg = fc*wg(4)
   resk = fc*wgk(8)
   resabs = abs(resk)
@@ -6347,8 +6337,8 @@ subroutine qk15 ( f, n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
   do j = 1, 3
     jtw = j*2
     absc = hlgth*xgk(jtw)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtw) = fval1
     fv2(jtw) = fval2
     fsum = fval1+fval2
@@ -6360,8 +6350,8 @@ subroutine qk15 ( f, n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
   do j = 1, 4
     jtwm1 = j*2-1
     absc = hlgth*xgk(jtwm1)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtwm1) = fval1
     fv2(jtwm1) = fval2
     fsum = fval1+fval2
@@ -6788,7 +6778,7 @@ subroutine qk15w ( f, w, p1, p2, p3, p4, kp, a, b, result, abserr, resabs, &
 
   return
 end
-subroutine qk21 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
+subroutine qk21 ( f, a, b,result, abserr, resabs, resasc )
 
 !*****************************************************************************80
 !
@@ -6924,15 +6914,15 @@ subroutine qk21 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
 !  integral, and estimate the absolute error.
 !
   resg = 0.0d+00
-  fc = f(centr,n1,n2,l1,l2,n,q,v)
+  fc = f(centr)
   resk = wgk(11)*fc
   resabs = abs(resk)
 
   do j = 1, 5
     jtw = 2*j
     absc = hlgth*xgk(jtw)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtw) = fval1
     fv2(jtw) = fval2
     fsum = fval1+fval2
@@ -6944,8 +6934,8 @@ subroutine qk21 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
   do j = 1, 5
     jtwm1 = 2*j-1
     absc = hlgth*xgk(jtwm1)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtwm1) = fval1
     fv2(jtwm1) = fval2
     fsum = fval1+fval2
@@ -6975,7 +6965,7 @@ subroutine qk21 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
 
   return
 end
-subroutine qk31 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
+subroutine qk31 ( f, a, b,result, abserr, resabs, resasc )
 
 !*****************************************************************************80
 !
@@ -7114,7 +7104,7 @@ subroutine qk31 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
 !  Compute the 31-point Kronrod approximation to the integral,
 !  and estimate the absolute error.
 !
-  fc = f(centr,n1,n2,l1,l2,n,q,v)
+  fc = f(centr)
   resg = wg(8)*fc
   resk = wgk(16)*fc
   resabs = abs(resk)
@@ -7122,8 +7112,8 @@ subroutine qk31 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
   do j = 1, 7
     jtw = j*2
     absc = hlgth*xgk(jtw)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtw) = fval1
     fv2(jtw) = fval2
     fsum = fval1+fval2
@@ -7135,8 +7125,8 @@ subroutine qk31 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
   do j = 1, 8
     jtwm1 = j*2-1
     absc = hlgth*xgk(jtwm1)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtwm1) = fval1
     fv2(jtwm1) = fval2
     fsum = fval1+fval2
@@ -7165,7 +7155,7 @@ subroutine qk31 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
 
   return
 end
-subroutine qk41 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
+subroutine qk41 ( f, a, b,result, abserr, resabs, resasc )
 
 !*****************************************************************************80
 !
@@ -7313,15 +7303,15 @@ subroutine qk41 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
 !  the integral, and estimate the absolute error.
 !
   resg = 0.0d+00
-  fc = f(centr,n1,n2,l1,l2,n,q,v)
+  fc = f(centr)
   resk = wgk(21)*fc
   resabs = abs(resk)
 
   do j = 1, 10
     jtw = j*2
     absc = hlgth*xgk(jtw)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtw) = fval1
     fv2(jtw) = fval2
     fsum = fval1+fval2
@@ -7333,8 +7323,8 @@ subroutine qk41 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
   do j = 1, 10
     jtwm1 = j*2-1
     absc = hlgth*xgk(jtwm1)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtwm1) = fval1
     fv2(jtwm1) = fval2
     fsum = fval1+fval2
@@ -7363,7 +7353,7 @@ subroutine qk41 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
 
   return
 end
-subroutine qk51 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
+subroutine qk51 ( f, a, b,result, abserr, resabs, resasc )
 
 !*****************************************************************************80
 !
@@ -7518,7 +7508,7 @@ subroutine qk51 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
 !  Compute the 51-point Kronrod approximation to the integral,
 !  and estimate the absolute error.
 !
-  fc = f(centr,n1,n2,l1,l2,n,q,v)
+  fc = f(centr)
   resg = wg(13)*fc
   resk = wgk(26)*fc
   resabs = abs(resk)
@@ -7526,8 +7516,8 @@ subroutine qk51 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
   do j = 1, 12
     jtw = j*2
     absc = hlgth*xgk(jtw)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtw) = fval1
     fv2(jtw) = fval2
     fsum = fval1+fval2
@@ -7539,8 +7529,8 @@ subroutine qk51 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
   do j = 1, 13
     jtwm1 = j*2-1
     absc = hlgth*xgk(jtwm1)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtwm1) = fval1
     fv2(jtwm1) = fval2
     fsum = fval1+fval2
@@ -7570,7 +7560,7 @@ subroutine qk51 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
 
   return
 end
-subroutine qk61 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc ) 
+subroutine qk61 ( f, a, b,result, abserr, resabs, resasc ) 
 
 !*****************************************************************************80
 !
@@ -7657,8 +7647,6 @@ subroutine qk61 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
   real*8:: wg(15)
   real*8:: wgk(31)
   real*8:: xgk(31)
-  integer:: n1,n2,l1,l2,n
-  real*8::q,v
 !
 !           the abscissae and weights are given for the
 !           interval (-1,1). because of symmetry only the positive
@@ -7737,15 +7725,15 @@ subroutine qk61 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
 !  and estimate the absolute error.
 !
   resg = 0.0d+00
-  fc = f(centr,n1,n2,l1,l2,n,q,v)
+  fc = f(centr)
   resk = wgk(31)*fc
   resabs = abs(resk)
 
   do j = 1, 15
     jtw = j*2
     absc = hlgth*xgk(jtw)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtw) = fval1
     fv2(jtw) = fval2
     fsum = fval1+fval2
@@ -7757,8 +7745,8 @@ subroutine qk61 ( f,n1,n2,l1,l2,q,v,n, a, b, result, abserr, resabs, resasc )
   do j = 1, 15
     jtwm1 = j*2-1
     absc = hlgth*xgk(jtwm1)
-    fval1 = f(centr-absc,n1,n2,l1,l2,n,q,v)
-    fval2 = f(centr+absc,n1,n2,l1,l2,n,q,v)
+    fval1 = f(centr-absc)
+    fval2 = f(centr+absc)
     fv1(jtwm1) = fval1
     fv2(jtwm1) = fval2
     fsum = fval1+fval2

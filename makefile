@@ -12,10 +12,10 @@ FCFLAGS += -Wall -fbounds-check
 LDFLAGS = -llapack
 
 # List of executables to be built within the package
-PROGRAMS =  quadrature.f special_functions.f90 bessel.f90 phiFuncParams.f90 phiFunction.f90
+PROGRAMS =  quadrature.f special_functions.f90 bessel.f90 phiFuncParams.f90 phiFunction.f90 matrixElements.f90 quadpack.f90 qDependent_PionInFlight_MEC.f90 qDependent_Seagull_MEC.f90
 
 # The List of objects that will be built
-_OBJS=  quadrature.o special_functions.o bessel.o phiFuncParams.o phiFunction.o
+_OBJS=  quadrature.o special_functions.o bessel.o phiFuncParams.o phiFunction.o matrixElements.o quadpack.o qDependent_PionInFlight_MEC.o qDependent_Seagull_MEC.o
 OBJS = $(patsubst %,Objects/%,$(_OBJS))
 #PROG= gen_H_FB
 PROG= test

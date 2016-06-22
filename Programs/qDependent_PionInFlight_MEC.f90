@@ -1,7 +1,7 @@
 ! This Module will contain the q-dependent MEC currents
 module qDependent_PionInFlight_MEC
-use deuteronMEC_params
 use matrixElements
+use phiFuncParams
 real*8,parameter::epsabs = 1d-15 !The Requested accuracy for spherical bessel ME
 real*8,parameter::epsrel = 1d-15 !The Requested accuracy
 integer,parameter:: key=6 !
@@ -70,7 +70,46 @@ end function func
 
 
 
+real*8 function determineMaxRange(ni,nj,li,lj,bessel_n, q, v)
+implicit none
+integer,intent(in):: ni,nj,li,lj,bessel_n
+real*8,intent(in)::v,q
+real*8::x1,x2,x3,x4
+real*8:: f1,f2,f3,f4
+integer::i
 
+! initialize some parameters
+f1 = 10.d0
+f2 = 10.d0
+f3= 10.d0
+f4 =10.d0
+i=1
+
+
+do while((f1.gt.0.d0).and.(f2.gt.0.d0).and.(f3.gt.0.d0).and.(f4.gt.0.d0))
+
+x1 = dfloat(i)*stepsize
+f1 = abs(func(x1,ni,nj,li,lj,bessel_n,q,v))
+
+x2 = dfloat(i+1)*stepsize
+f2 = abs(func(x2,ni,nj,li,lj,bessel_n,q,v))
+
+x3 = dfloat(i+2)*stepsize
+f3 = abs(func(x3,ni,nj,li,lj,bessel_n,q,v))
+
+x4 = dfloat(i+3)*stepsize
+f4 = abs(func(x4,ni,nj,li,lj,bessel_n,q,v))
+
+
+i=i+3
+
+end do
+
+!print *, f1,f2,f3,f4
+
+determineMaxRange = x4
+
+end function determineMaxRange
 
 
 

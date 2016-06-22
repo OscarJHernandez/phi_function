@@ -9,6 +9,17 @@ integer,parameter:: ipoly1=2 !  Legendre polynomial from 0 to 1
 real*8,parameter:: depsma=1.0d-18
 real*8:: al,ierr,iderr,dbe
 
+
+! From input supposedly
+integer,parameter::NquadMomentum=500 ! These are the number of quadrature points to use in p
+integer,parameter::NquadPosition=500 ! This r-space quadrature points
+real(8),parameter::rMax=23.d0
+real(8),parameter::pMax=5000.d0
+integer,parameter::nPolyMax = 10
+integer,parameter::lPolyMax = 10
+real(8),parameter::v = 1.d0
+
+
 contains
 
 ! Initialize all of the guassian quadrature points and weights

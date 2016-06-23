@@ -9,6 +9,11 @@ real*8,parameter::epsabs = 1d-15 !The Requested accuracy for spherical bessel ME
 real*8,parameter::epsrel = 1d-15 !The Requested accuracy
 integer,parameter:: key=6 !
 real*8,parameter::stepsize= 1.d0 ! the step size used to determine the range of the function
+real(8),parameter:: absfunc = 1.d-10 ! This is the |f(x)|. Which determines the range of integration condition
+
+real*8:: abserr ! estimate of modulus of absolute error
+integer:: neval ! number of integrand evaluations
+integer:: ier ! error message
 
 contains
 
@@ -20,17 +25,15 @@ contains
 !The QAG algorithm is a simple adaptive integration procedure. The integration region is divided into subintervals,
 ! and on each iteration the subinterval with the largest estimated error is bisected. This reduces the overall error rapidly, 
 ! as the subintervals become concentrated around local difficulties in the integrand. 
-real*8 function seagull_radial_me_spherical_bessel(n1,n2,l1,l2,q,v,n)
+real*8 function seagull_radial_me_spherical_bessel(n1,n2,l1,l2,q,v,n,intkey)
 implicit none
 integer,intent(in):: n1,n2,l1,l2
+integer,intent(in)::intkey
 integer,intent(in):: n ! Spherical bessel function order
 real*8::a ! the lower limit of the integral
 real*8::b ! the upper limit of the integral
 real*8:: q,v
-real*8:: results ! the result
-real*8:: abserr ! estimate of modulus of absolute error
-integer:: neval ! number of integrand evaluations
-integer:: ier ! error message
+real*8:: output! the result
 
 ! initiallize parameters for function
 a = 0.d0
@@ -39,12 +42,60 @@ a = 0.d0
 ! Determines the range of the function
 b = determineMaxRange(n1,n2,l1,l2,n,q,v)
 
-! Call the quad-pack oscillating integration routine
-call qag ( func, n1,n2,l1,l2,q,v,n ,a, b, epsabs, epsrel, key, results, abserr, neval, ier )
+if(intkey.eq.0) then
+call quadpackIntegration(n1,n2,l1,l2,n,q,v,a,b,output)
+else
+call legendreQuadrature(n1,n2,l1,l2,n,q,v,a,b,output)
+end if
 
-seagull_radial_me_spherical_bessel = results
+! Call the quad-pack oscillating integration routine
+!call qag ( func,a, b, epsabs, epsrel, key, results, abserr, neval, ier )
+call quadpackIntegration(n1,n2,l1,l2,n,q,v,a,b,output)
+
+seagull_radial_me_spherical_bessel = output
 
 end function seagull_radial_me_spherical_bessel
+
+
+subroutine quadpackIntegration(n1,n2,l1,l2,n,q,v,a,b,output)
+integer::n1,n2,l1,l2,n
+real(8)::q,v,a,b
+real(8)::output,results     
+   
+   call qag ( wrapper,a, b, epsabs, epsrel, key, results, abserr, neval, ier )
+   
+   output = results
+       
+   contains 
+   
+   real(8) function wrapper(x)
+   implicit none
+   real(8)::x
+   wrapper = func(x,n1,n2,l1,l2,n,q,v)
+   end function
+   
+
+end subroutine
+
+subroutine legendreQuadrature(n1,n2,l1,l2,n,q,v,a,b,output)
+implicit none
+integer::n1,n2,l1,l2,n
+real(8)::q,v,a,b
+real(8)::output,f,s ,x 
+integer::i
+
+  s=0.d0
+  
+  
+    do i=1,Nquad2
+        x = b*dx2(i)
+        f = func(x,n1,n2,l1,l2,n,q,v)
+        s = s +   dw2(i)*f*b
+    end do
+   
+   output =s
+
+end subroutine
 
 
 ! The Radial matrix elements written out in the H.O basis
@@ -69,7 +120,6 @@ y=q*x*0.5d0*(1.d0/hbarc)
 
 
     func = 3.d0*(1.d0/(mpiMeV*x))*(1.d0+(1.d0/(mpiMeV*x)))*dexp(-1.d0*mpiMeV*x)
-
     func = func*BESSEL(bessel_n,y)
     func = func*(LagExp(ni,alphai,2.d0*v*x*x)*Norm(ni,li,v))
     func=func*(LagExp(nj,alphaj,2.d0*v*x*x)*Norm(nj,lj,v))
@@ -97,7 +147,7 @@ f4 =10.d0
 i=1
 
 
-do while((f1.gt.0.d0).and.(f2.gt.0.d0).and.(f3.gt.0.d0).and.(f4.gt.0.d0))
+do while((abs(f1).gt.absfunc).and.(abs(f2).gt.absfunc).and.(abs(f3).gt.absfunc).and.(abs(f4).gt.absfunc))
 
 x1 = dfloat(i)*stepsize
 f1 = abs(func(x1,ni,nj,li,lj,bessel_n,q,v))
@@ -110,9 +160,12 @@ f3 = abs(func(x3,ni,nj,li,lj,bessel_n,q,v))
 
 x4 = dfloat(i+3)*stepsize
 f4 = abs(func(x4,ni,nj,li,lj,bessel_n,q,v))
+!print *,x1,f1!,f2,f3,f4
+!print *,x2,f2
+!print *,x3,f3
+!print *,x4,f4
 
-
-i=i+3
+i=i+4
 
 end do
 

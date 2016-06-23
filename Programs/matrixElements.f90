@@ -14,8 +14,6 @@ real(8),allocatable:: LagExpArray(:,:,:) ! The array that stores the associated 
 real(8),allocatable:: SphericalBessel(:,:) ! Array that stores the spherical Bessel functions evaluated at quadrature points
 real(8),allocatable:: PhiFunction(:,:,:,:) ! Array that stores the Phi functions evaluated at the quadrature points
 real(8),allocatable:: RadialSeagullME(:,:,:,:,:) ! Array that stores the radial ME for the seagull term
-real(8),parameter::  dh =0.00001d0 ! The small parameter used to define derivatives
-
 
 contains 
 

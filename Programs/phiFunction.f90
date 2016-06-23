@@ -5,24 +5,25 @@ contains
 
 
 ! This is the spherical Hankel function of the first kind
-Complex(kind =8) function sphericalHankelFunction1(n,z)
-implicit none
-integer::n ! The order of the function
-complex(kind=8)::z,h1
-integer::nm
-complex ( kind = 8 ) csj(0:n+2)
-complex ( kind = 8 ) cdj(0:n+2)
-complex ( kind = 8 ) csy(0:n+2)
-complex ( kind = 8 ) cdy(0:n+2)
+Complex*16 function sphericalHankelFunction1(l,cz)
+implicit real(8) (a,b,d-h,o-z)
+implicit complex*16 (c)
+complex*16::cz
+integer::ll
+integer::l
+integer::n,ifail,kfn,mode1
+      
+      
+      cl=dcmplx(1.0d0*ll,0.0d0)
+      ceta=dcmplx(0.0d0,0.0d0)
+      ifail=1
+      n=1
+      kfn=1
+      mode1=1
 
-! Call the subroutine to compute complex sphercical Bessel functions
-call csphjy(n+2, z, nm, csj, cdj, csy, cdy )
-
-! This is the spherical Hankel function: h =j+i*y
-h1 = csj(n)+dCMPLX(0.d0,1.d0)*csy(n)
-
-
-sphericalHankelFunction1 = h1
+     call coulcc(cz,ceta,cl,n,cf,col,cfp,colp,csig,mode1,kfn,ifail)
+     
+sphericalHankelFunction1 = cf+dcmplx(0.d0,1.d0)*col
 
 end function
 
@@ -82,8 +83,8 @@ complex(16)::s1
 complex(16)::s2 
 complex(16)::h1,h0
 real*8::r
-complex*16:: G
-complex(kind =8)::z
+complex(16):: G
+complex*16::z
 
 s0 = dCMPLX(0.d0,1.d0)*dsqrt(0.25d0*q*q+mpi*mpi)
 s1 = dCMPLX(0.d0, 1.d0)*dsqrt(0.25d0*(q*q)*(1.d0-x*x)+mpi*mpi)
@@ -101,6 +102,17 @@ h1 = sphericalHankelFunction1(sigma,z)
 
 Gtilda = REALPART(G)
 
+    if(isnan(Gtilda)) then
+    print *, ''
+    print *, 'sigma',sigma
+    print *, 's2',s2
+    print *, 'z',z
+    print *, 'x',x
+    print *, 's1',s1
+    print *, 'h1',h1
+    stop 'Gtilda is NAN'
+    
+    end if
 end function
 
 

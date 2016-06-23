@@ -1,3 +1,5 @@
+
+! The phi Function that is needed for the q-dependent currents
 module phiFunction
 use phiFuncParams
 contains

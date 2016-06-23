@@ -5,9 +5,9 @@ use qDependent_Seagull_MEC
 use qDependent_PionInFlight_MEC
 
 implicit none
-integer,parameter::nu = 0
+integer,parameter::nu = 2
 integer,parameter::sigma=2
-integer,parameter::L=0
+integer,parameter::L=2
 real(8),parameter::q=1.d0
 integer::n1,n2,l1,l2
 integer,parameter:: n=0
@@ -21,8 +21,11 @@ l1 =5
 l2=5
 !CALL CPU_TIME(TIME1) 
 !print *, sphericalHankelFunction1(n,z)
-do n1=1,5
-do n2=1,5
+
+print *, 'Nquad1',Nquad1
+print *, 'Nquad2',Nquad2
+do n1=30,50
+do n2=30,50
 !print *, 'seagull', n1,n2,l1,l2,seagull_radial_me_spherical_bessel(n1,n2,l1,l2,q,v,n,intkey)
 !print *, 'seagull', n1,n2,l1,l2,seagull_radial_me_spherical_bessel(n1,n2,l1,l2,q,v,n,intkey-1)
 print *, 'inFlight',n1,n2,l1,l2,pionInFlight_radial_me_spherical_bessel(n1,n2,l1,l2,q,v,nu,sigma,L,intkey)

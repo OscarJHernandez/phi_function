@@ -6,7 +6,7 @@ real(8),parameter::pi= dAtan(1.d0)*4.d0 ! Pi
 integer,parameter:: Nquad1 = 200 ! the number of quadrature points for Legendre quad for integrating over momentum
 real*8:: da(Nquad1),db(Nquad1),dx(Nquad1),dw(Nquad1),e(Nquad1)
 
-integer,parameter:: Nquad2 = 50 ! the number of quadrature points for Legendre quad for integrating over momentum
+integer,parameter:: Nquad2 = 300 ! the number of quadrature points for Legendre quad for integrating over momentum
 real*8:: da2(Nquad2),db2(Nquad2),dx2(Nquad2),dw2(Nquad2),e2(Nquad2)
 
 

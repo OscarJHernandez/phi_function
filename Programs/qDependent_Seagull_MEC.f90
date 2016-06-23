@@ -48,10 +48,6 @@ else
 call legendreQuadrature(n1,n2,l1,l2,n,q,v,a,b,output)
 end if
 
-! Call the quad-pack oscillating integration routine
-!call qag ( func,a, b, epsabs, epsrel, key, results, abserr, neval, ier )
-call quadpackIntegration(n1,n2,l1,l2,n,q,v,a,b,output)
-
 seagull_radial_me_spherical_bessel = output
 
 end function seagull_radial_me_spherical_bessel

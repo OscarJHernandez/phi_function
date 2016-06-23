@@ -2,8 +2,8 @@ module phiFuncParams
 implicit none
 real(8),parameter::pMax =500
 real(8),parameter:: m=1.d0
-integer,parameter:: Nquad1 = 10000 ! the number of quadrature points for Legendre quad for integrating over momentum
-integer,parameter:: Nquad2 = 800 ! The second quadrature point scheme (integral over x)
+integer,parameter:: Nquad1 = 1000 ! the number of quadrature points for Legendre quad for integrating over momentum
+integer,parameter:: Nquad2 = 100 ! The second quadrature point scheme (integral over x)
 real*8:: da(Nquad1),db(Nquad1),dx(Nquad1),dw(Nquad1),e(Nquad1)
 real*8:: da2(Nquad2),db2(Nquad2),dx2(Nquad2),dw2(Nquad2),e2(Nquad2)
 integer,parameter:: ipoly1=2 !  Legendre polynomial from 0 to 1 
